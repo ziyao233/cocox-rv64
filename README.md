@@ -1,8 +1,8 @@
 # cocox-rv64
 
-> Assembly is zombie, microkernel is shit.
+> Assembly is zombie, monokernel is shit.
 
-A microkernel written in pure rv64gc assembly
+A monokernel written in pure rv64gc assembly
 
 ---
 

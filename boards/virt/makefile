@@ -1,0 +1,1 @@
+OBJS	+= $(THISBOARD)/console.o

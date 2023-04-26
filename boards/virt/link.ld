@@ -28,8 +28,10 @@ SECTIONS {
 	} > ram AT > ram : data
 
 	.bss : {
+		. = ALIGN(4096);
 		PROVIDE( __bss_start = . );
 		*(.sbss .sbss.*) *(.bss .bss.*)
+		. = ALIGN(4096);
 		PROVIDE( __bss_end = . );
 	} > ram AT > ram : bss
 

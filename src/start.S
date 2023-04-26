@@ -5,7 +5,7 @@
  *	Copyright (c) 2023 Ziyao.
  */
 
-#include<board/uart.h>
+#include<board/hart.h>
 
 	.global		_start
 
@@ -13,22 +13,20 @@
 _start:
 	/*	Currently only on processor is used	*/
 	csrr		t0,		mhartid
+	la		t1,		.stack
+	slli		t2,		t0,		12
+	add		sp,		t1,		t2
 	bnez		t0,		.halt
 
-	la		a0,		.hello
-	la		a1,		UART_THR
+	/*	Clear .bss	*/
+	la		a0,		__bss_start
+	la		a1,		__bss_end
+.clear_bss:
+	sd		zero,		0(a0)
+	addi		a0,		a0,		8
+	bltu		a0,		a1,		.clear_bss
 
-.wait_loop:
-	la		t0,		UART_LSR
-	lb		t0,		0(t0)
-	li		t1,		UART_LSR_EMPTY_MASK
-	and		t0,		t0,		t1
-	beqz		t0,		.wait_loop
-
-	lb		t0,		0(a0)
-	sb		t0,		0(a1)
-	add		a0,		a0,		1
-	bnez		t0,		.wait_loop
+	j		kernel_start
 
 .halt:
 	wfi
@@ -36,4 +34,8 @@ _start:
 
 	.data
 
-.hello:	.asciz	"Hello world!\0"
+.hello:	.asciz	"Cocox-rv64 built " __DATE__ " " __TIME__
+
+	.bss
+.stack:
+	.skip		BOARD_HART_NUM * 4096

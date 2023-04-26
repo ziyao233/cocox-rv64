@@ -18,8 +18,10 @@ CFLAGS		= -nostdlib -nostdinc -I$(INCLUDE)	\
 		  -mcmodel=medany -mabi=lp64d -g
 LDFLAGS		= -T $(LDSCRIPT)
 
-OBJS		:= start.o
+OBJS		:= start.o kernel.o printk.o
 KERNEL		:= cocox.elf
+
+include $(THISBOARD)/makefile
 
 default: build
 
@@ -35,4 +37,4 @@ disbuild: clean
 	-rm $(KERNEL)
 
 %.o:	%.S
-	$(CC) $< -c $(CFLAGS)
+	$(CC) $< -c $(CFLAGS) -o $@

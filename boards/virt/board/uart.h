@@ -9,9 +9,15 @@
 #ifndef __BOARD_UART_H_INC__
 #define __BOARD_UART_H_INC__
 
-#define UART_BASE		0x10000000
-#define UART_THR		(UART_BASE)
-#define UART_LSR		(UART_BASE + 0x05)
-#define UART_LSR_EMPTY_MASK	0x40
+#define BOARD_UART_NR			1
+#define BOARD_UART0_BASE		0x10000000
+#define BOARD_UART0_THR			0
+#define BOARD_UART0_IER			0x1
+#define BOARD_UART0_FCR			0x2
+#define BOARD_UART0_ISR			0x2
+#define BOARD_UART0_LCR			0x3
+#define BOARD_UART0_LSR			0x5
+#define BOARD_UART0_LSR_RX_READY	0x1
+#define BOARD_UART0_LSR_TX_IDLE		0x40
 
 #endif
