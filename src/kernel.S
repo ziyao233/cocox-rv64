@@ -15,6 +15,12 @@ kernel_start:
 	call		printk
 	call		printk_newline
 
+	li		a0,		0x1145141919810
+	call		printk_numhex
+	call		printk_newline
+	li		a0,		0xabcdef1234
+	call		printk_numhex
+
 .loop:
 	wfi
 	j		.loop
