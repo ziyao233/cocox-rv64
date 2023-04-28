@@ -95,6 +95,48 @@ printk_numhex:
 	ret
 
 printk_num:
+	addi		sp,		sp,		48
+	sd		ra,		0(sp)
+	sd		s0,		8(sp)
+	sd		s1,		16(sp)
+	sd		s2,		24(sp)
+	sd		s3,		32(sp)
+
+/*
+	bnez		a0,		.prepare
+	li		a0,		'0'
+	call		.putchar
+	ld		ra,		0(sp)
+	ret
+ */
+
+.prepare:
+	mv		s0,		a0		// Orignal number
+	li		s1,		10
+	mv		s2,		s1
+.count_prefix:
+	divu		t0,		s0,		s1
+	beqz		t0,		.fix_divisor
+	mul		s1,		s1,		s2
+	j		.count_prefix
+
+.fix_divisor:
+	div		s1,		s1,		s2
+
+.put_digit:
+	divu		a0,		s0,		s1
+	remu		s0,		s0,		s1
+	addi		a0,		a0,		48
+	call		.putchar
+	divu		s1,		s1,		s2
+	bnez		s1,		.put_digit
+
+	ld		ra,		0(sp)
+	ld		s0,		8(sp)
+	ld		s1,		16(sp)
+	ld		s2,		24(sp)
+	ld		s3,		32(sp)
+	addi		sp,		sp,		-48
 	ret
 
 printk_newline:

@@ -35,6 +35,8 @@ SECTIONS {
 		PROVIDE( __bss_end = . );
 	} > ram AT > ram : bss
 
+	PROVIDE( __free_pages_start = . );
+
 	PROVIDE( __mem_start = ORIGIN(ram) );
 	PROVIDE( __mem_end = ORIGIN(ram) + LENGTH(ram));
 }
