@@ -22,7 +22,7 @@ board_vm_kinit:
 
 	li		a1,		BOARD_UART0_BASE
 	mv		a2,		a1
-	li		a3,		0xf		// RWXV
+	li		a3,		0x7		// RWXV
 	call		vm_map
 
 	ld		ra,		0(sp)
