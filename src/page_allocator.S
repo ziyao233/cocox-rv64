@@ -17,7 +17,7 @@ page_allocator_init:
 	li		t0,		~4095
 	and		a1,		a1,		t0
 	la		a2,		__mem_end
-	la		t0,		.pages		// t0 holds the lass
+	la		t0,		pages		// t0 holds the lass
 							// node
 	li		t1,		4096
 	mv		a0,		zero
@@ -36,7 +36,7 @@ page_allocator_init:
  *	Return: The beginning address of the page
  */
 page_alloc:
-	la		a1,		.pages
+	la		a1,		pages
 	ld		a0,		0(a1)
 	beqz		a0,		.no_available
 	ld		t0,		0(a0)
@@ -50,7 +50,7 @@ page_alloc:
  */
 page_free:
 	beqz		a0,		.null_page
-	la		t0,		.pages
+	la		t0,		pages
 	ld		t1,		0(t0)
 	sd		t1,		0(a0)
 	sd		a0,		0(t0)
@@ -58,4 +58,4 @@ page_free:
 	ret
 
 	.data
-.pages:	.quad		0
+pages:	.quad		0

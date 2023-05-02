@@ -1,1 +1,1 @@
-OBJS	+= $(THISBOARD)/console.o
+OBJS	+= $(THISBOARD)/console.o $(THISBOARD)/vm.o

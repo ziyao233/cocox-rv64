@@ -18,7 +18,8 @@ CFLAGS		= -nostdlib -nostdinc -I$(INCLUDE)	\
 		  -mcmodel=medany -mabi=lp64d -g
 LDFLAGS		= -T $(LDSCRIPT)
 
-OBJS		:= start.o kernel.o printk.o page_allocator.o
+OBJS		:= start.o kernel.o printk.o page_allocator.o exception.o  \
+		   vm.o
 KERNEL		:= cocox.elf
 
 include $(THISBOARD)/makefile

@@ -12,6 +12,7 @@
 	.global		printk_numhex
 	.global		printk_num
 	.global		printk_newline
+	.global		printk_tab
 
 	.text
 
@@ -31,7 +32,7 @@ printk_init:
  *	a0:	Pointer to the string
  */
 printk:
-	add		sp,		sp,		16
+	add		sp,		sp,		-16
 	sd		s0,		0(sp)
 	sd		ra,		8(sp)
 	mv		s0,		a0
@@ -44,11 +45,11 @@ printk:
 
 	ld		s0,		0(sp)
 	ld		ra,		8(sp)
-	add		sp,		sp,		-16
+	add		sp,		sp,		16
 	ret
 
 printk_numhex:
-	add		sp,		sp,		32
+	add		sp,		sp,		-32
 	sd		ra,		0(sp)
 	sd		s0,		8(sp)
 	sd		s1,		16(sp)
@@ -91,11 +92,11 @@ printk_numhex:
 	ld		s0,		8(sp)
 	ld		s1,		16(sp)
 	ld		s2,		24(sp)
-	add		sp,		sp,		-32
+	add		sp,		sp,		32
 	ret
 
 printk_num:
-	addi		sp,		sp,		48
+	addi		sp,		sp,		-48
 	sd		ra,		0(sp)
 	sd		s0,		8(sp)
 	sd		s1,		16(sp)
@@ -136,9 +137,13 @@ printk_num:
 	ld		s1,		16(sp)
 	ld		s2,		24(sp)
 	ld		s3,		32(sp)
-	addi		sp,		sp,		-48
+	addi		sp,		sp,		48
 	ret
 
 printk_newline:
-	li		a0,		10
+	li		a0,		'\n'
+	j		.putchar
+
+printk_tab:
+	li		a0,		'\t'
 	j		.putchar

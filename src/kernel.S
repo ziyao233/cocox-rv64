@@ -9,11 +9,18 @@
 
 	.text
 
+init_exception:
+	la		t0,		exception_handler
+	csrw		stvec,		t0
+	ret
+
 kernel_start:
 	call		printk_init
 	la		a0,		.kernelBuiltInfo
 	call		printk
 	call		printk_newline
+
+	call		init_exception
 
 	la		a0,		.kernelInitPages
 	call		page_allocator_init
@@ -21,31 +28,17 @@ kernel_start:
 	la		a0,		.availablePages
 	call		printk
 
-	call		page_alloc
-	mv		s0,		a0
-	call		printk_numhex
-	call		printk_newline
-	call		page_alloc
-	mv		s1,		a0
-	call		printk_numhex
-	call		printk_newline
+	la		a0,		.initKernelPageTable
+	call		printk
+	call		vm_kinit
 
-	mv		a0,		s0
-	call		page_free
-	mv		a0,		s1
-	call		page_free
-
-	call		page_alloc
-	mv		s0,		a0
-	call		printk_numhex
-	call		printk_newline
-
-	mv		a0,		zero
-	call		page_free
+	la		a0,		.enablePaging
+	call		printk
+	call		vm_kenable_paging
 
 	la		a0,		.done
 	call		printk
-
+	call		printk_newline
 .loop:
 	wfi
 	j		.loop
@@ -57,4 +50,9 @@ kernel_start:
 	.asciz		"Initializing page allocator..."
 .availablePages:
 	.asciz		" pages (4k) available.\n"
+.initKernelPageTable:
+	.asciz		"Initializing kernel page table...\n"
+.enablePaging:
+	.asciz		"Enable paging...\n"
 .done:	.asciz		"done\n"
+	.align		4
